@@ -1,0 +1,53 @@
+# ==============================================================================
+# REPÚBLICA DIGITAL DE NOVATLANTIS — VALIDAÇÃO DE PR DE DADOS (DATA CI)
+# Repositório: LATAM-PS-CE-Team/novatlantis-data-platform
+# Acionamento: Pull Request contra 'main' (ambiente dev) ou 'prod' (ambiente prod)
+# Objetivo: Validar sintaxe de todos os scripts Python (gerador de 100k cidadãos,
+#           DAGs do Airflow/Composer e migrações) e integridade dos schemas JSON.
+# ==============================================================================
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  # 1. Verifica sintaxe de todos os scripts Python (.py)
+  - id: 'validate-python-syntax'
+    name: 'python:3.12-slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+        echo "[DATA-PR] Verificando compilação sintática dos scripts Python..."
+        python3 -m py_compile data-generator/*.py scripts/*.py
+        echo "[OK] Todos os scripts Python compilam sem erros."
+
+  # 2. Valida todos os arquivos JSON de schema do Government Data Platform (GDP)
+  - id: 'validate-json-schemas'
+    name: 'python:3.12-slim'
+    entrypoint: 'python3'
+    waitFor: ['validate-python-syntax']
+    args:
+      - '-c'
+      - |
+        import glob, json
+        files = glob.glob("government-data-platform/**/*.json", recursive=True)
+        for f in files:
+            with open(f, "r", encoding="utf-8") as fp:
+                json.load(fp)
+        print(f"[OK] {len(files)} arquivos JSON do Government Data Platform validados com sucesso.")
+
+  # 3. Verifica presença e integridade dos arquivos SQL DDL do AlloyDB
+  - id: 'validate-sql-ddl'
+    name: 'python:3.12-slim'
+    entrypoint: 'bash'
+    waitFor: ['validate-json-schemas']
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+        for SQL_FILE in data-generator/sql/*.sql; do
+          echo "[DATA-PR] Verificando arquivo DDL: $${SQL_FILE}"
+          test -s "$${SQL_FILE}"
+        done
+        echo "[OK] Schemas SQL DDL validados."

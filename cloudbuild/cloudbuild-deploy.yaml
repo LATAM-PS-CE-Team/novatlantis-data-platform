@@ -1,0 +1,32 @@
+# ==============================================================================
+# REPÚBLICA DIGITAL DE NOVATLANTIS — DEPLOY AUTOMATIZADO DE DADOS (DATA CD)
+# Repositório: LATAM-PS-CE-Team/novatlantis-data-platform
+# Acionamento:
+#   - Merge livre na branch 'main'             -> Ambiente DEV  (_ENV=dev)
+#   - Merge aprovado (@pedrocalixto) em 'prod' -> Ambiente PROD (_ENV=prod)
+# Objetivo: Sincronizar tabelas brutas no Cloud Storage e atualizar Datasets,
+#           Tabelas e Views Medallion do Government Data Platform no BigQuery.
+# ==============================================================================
+
+substitutions:
+  _ENV: 'dev'
+  _REGION: 'us-central1'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  - id: 'provision-gdp-bigquery-medallion'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'bash'
+    env:
+      - 'GCP_PROJECT_ID=${PROJECT_ID}'
+      - 'NOVATLANTIS_ENV=${_ENV}'
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+        echo "=================================================================="
+        echo "[DATA-CD] Sincronizando Government Data Platform (BigQuery Medallion) — Ambiente: ${_ENV}"
+        echo "=================================================================="
+        python3 ./scripts/provision_gdp_bigquery.py
