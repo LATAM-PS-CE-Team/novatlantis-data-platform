@@ -17,13 +17,19 @@ PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "novatlantis")
 LOCATION = "US"
 GCS_DROPOFF_BUCKET = "novatlantis-gdp-drp-cs-0"
 GCS_LANDING_BUCKET = "novatlantis-gdp-dwh-lnd-cs-0"
-LAKEHOUSE_DIR = os.path.join(os.path.dirname(__file__), "../../data-generator/lakehouse")
+_CANDIDATE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data-generator/lakehouse"))
+LAKEHOUSE_DIR = (
+    _CANDIDATE_DIR
+    if os.path.isdir(_CANDIDATE_DIR)
+    else os.path.abspath(os.path.join(os.path.dirname(__file__), "../../data-generator/lakehouse"))
+)
 
 
 def get_access_token() -> str:
     env = os.environ.copy()
-    env["PATH"] = f"/google/data/ro/teams/cloud-sdk:{env.get('PATH', '')}"
-    env["CLOUDSDK_ACTIVE_CONFIG_NAME"] = "argolis"
+    if os.path.isdir("/google/data/ro/teams/cloud-sdk"):
+        env["PATH"] = f"/google/data/ro/teams/cloud-sdk:{env.get('PATH', '')}"
+        env["CLOUDSDK_ACTIVE_CONFIG_NAME"] = "argolis"
     out = subprocess.check_output(["gcloud", "auth", "print-access-token"], env=env)
     return out.decode("utf-8").strip()
 
