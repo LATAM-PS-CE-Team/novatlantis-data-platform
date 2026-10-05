@@ -2,8 +2,8 @@
 # REPÚBLICA DIGITAL DE NOVATLANTIS — DEPLOY AUTOMATIZADO DE DADOS (DATA CD)
 # Repositório: LATAM-PS-CE-Team/novatlantis-data-platform
 # Acionamento:
-#   - Merge livre na branch 'main'             -> Ambiente DEV  (_ENV=dev)
-#   - Merge aprovado (@pedrocalixto) em 'prod' -> Ambiente PROD (_ENV=prod)
+#   - Merge livre na branch 'dev'              -> Ambiente DEV  (_ENV=dev)
+#   - Merge aprovado (@pedrocalixto) em 'main' -> Ambiente PROD (_ENV=prod)
 # Objetivo: Sincronizar tabelas brutas no Cloud Storage e atualizar Datasets,
 #           Tabelas e Views Medallion do Government Data Platform no BigQuery.
 # ==============================================================================

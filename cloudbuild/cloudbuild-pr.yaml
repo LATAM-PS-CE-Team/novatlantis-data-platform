@@ -1,7 +1,7 @@
 # ==============================================================================
 # REPÚBLICA DIGITAL DE NOVATLANTIS — VALIDAÇÃO DE PR DE DADOS (DATA CI)
 # Repositório: LATAM-PS-CE-Team/novatlantis-data-platform
-# Acionamento: Pull Request contra 'main' (ambiente dev) ou 'prod' (ambiente prod)
+# Acionamento: Pull Request contra 'dev' (ambiente dev) ou 'main' (ambiente prod)
 # Objetivo: Validar sintaxe de todos os scripts Python (gerador de 100k cidadãos,
 #           DAGs do Airflow/Composer e migrações) e integridade dos schemas JSON.
 # ==============================================================================
