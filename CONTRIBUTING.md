@@ -1,12 +1,5 @@
-# Guia de Contribuição — `LATAM-PS-CE-Team/novatlantis-data-platform`
+# Guia de Contribuição — `novatlantis-data-platform`
 
-Repositório oficial da **Government Data Platform (GDP)** e do gerador de dados soberanos (100.000 cidadãos) da **República Digital de Novatlantis**, mantido pelo time [`LATAM-PS-CE-Team`](https://github.com/LATAM-PS-CE-Team).
-
-## Regra de Branches e Ambientes (`dev` e `prod`)
-
-Existem apenas **duas branches permanentes** no repositório:
-
-| Branch Alvo do PR | Ambiente no GCP | Regra de Aprovação e Merge |
-| :--- | :--- | :--- |
-| **`dev`** | **Ambiente `dev`** (`_ENV=dev`) | **Sem entraves (0 aprovações exigidas):** Qualquer colaborador pode submeter PR da sua branch local para a branch **`dev`** e fazer o merge por conta própria após o check verde do Cloud Build. |
-| **`main`** | **Ambiente `prod`** (`_ENV=prod`) | **Aprovação obrigatória de `@pedrocalixto`:** Qualquer colaborador pode submeter PR promovendo `dev` $\rightarrow$ `main`, mas o merge na `main` exige aprovação explícita de **`@pedrocalixto`**. |
+1. Crie uma branch a partir de `dev` para alterar schemas em `data-generator/`, scripts em `scripts/` ou módulos em `government-data-platform/`.
+2. Abra um Pull Request para `dev`. O pipeline validará os scripts Python, arquivos JSON e schemas SQL.
+3. Para atualizar o ambiente de produção, promova `dev` para `main` via Pull Request com aprovação de `@pedrocalixto`.

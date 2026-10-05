@@ -50,8 +50,8 @@ module "gateway" {
   EOT
   service_account_create = true
   iam = {
-    "roles/apigateway.admin" = [ "user:mirene@google.com" ]
-    "roles/apigateway.viewer" = [ "user:mirene@google.com" ]
+    "roles/apigateway.admin" = [ "user:admin@example.com" ]
+    "roles/apigateway.viewer" = [ "user:admin@example.com" ]
   }
 }
 # tftest modules=1 resources=11

@@ -8,7 +8,7 @@
 set -euo pipefail
 
 export PATH="/google/data/ro/teams/cloud-sdk:/usr/lib/google-cloud-sdk/bin:${PATH}"
-export CLOUDSDK_ACTIVE_CONFIG_NAME="${CLOUDSDK_ACTIVE_CONFIG_NAME:-argolis}"
+export CLOUDSDK_ACTIVE_CONFIG_NAME="${CLOUDSDK_ACTIVE_CONFIG_NAME:-default}"
 PROJECT_ID="novatlantis"
 REGION="us-central1"
 BUCKET_NAME="novatlantis-gdf-lakehouse"

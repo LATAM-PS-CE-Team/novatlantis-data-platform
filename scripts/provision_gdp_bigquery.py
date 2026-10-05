@@ -29,7 +29,7 @@ def get_access_token() -> str:
     env = os.environ.copy()
     if os.path.isdir("/google/data/ro/teams/cloud-sdk"):
         env["PATH"] = f"/google/data/ro/teams/cloud-sdk:{env.get('PATH', '')}"
-        env["CLOUDSDK_ACTIVE_CONFIG_NAME"] = "argolis"
+        env["CLOUDSDK_ACTIVE_CONFIG_NAME"] = os.environ.get("CLOUDSDK_ACTIVE_CONFIG_NAME", "default")
     out = subprocess.check_output(["gcloud", "auth", "print-access-token"], env=env)
     return out.decode("utf-8").strip()
 
@@ -82,7 +82,7 @@ def run_bq_query(token: str, sql: str, description: str = ""):
 def upload_and_load_lakehouse_tables(token: str):
     env = os.environ.copy()
     env["PATH"] = f"/google/data/ro/teams/cloud-sdk:{env.get('PATH', '')}"
-    env["CLOUDSDK_ACTIVE_CONFIG_NAME"] = "argolis"
+    env["CLOUDSDK_ACTIVE_CONFIG_NAME"] = os.environ.get("CLOUDSDK_ACTIVE_CONFIG_NAME", "default")
 
     ndjson_files = sorted(glob.glob(os.path.join(LAKEHOUSE_DIR, "*.ndjson.gz")))
     print(f"[GDP] Sincronizando {len(ndjson_files)} tabelas do Datalake para GCS Drop-off & Landing...")
