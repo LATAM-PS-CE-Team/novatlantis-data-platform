@@ -53,5 +53,5 @@ jobs:
         run: |
           gcloud builds submit . \
             --config=cloudbuild/cloudbuild-deploy.yaml \
-            --substitutions=_ENV=${{ steps.env_cfg.outputs.data_env }},_REGION=us-central1 \
+            --substitutions=_ENV=${{ steps.env_cfg.outputs.data_env }} \
             --project=${{ steps.env_cfg.outputs.project_id }}
